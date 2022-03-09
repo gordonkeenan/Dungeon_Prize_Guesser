@@ -1,3 +1,6 @@
 # Alttpr Dungeon Prize Guesser
 
-#TODO
+# TODO
+* Add Icons to results screen
+* Save complete modes to local storage
+* Add timed mode
