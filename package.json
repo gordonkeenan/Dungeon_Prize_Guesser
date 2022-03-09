@@ -1,7 +1,7 @@
 {
-  "name": "ALTTPR Map Checker",
+  "name": "alttpr_dungeon_guesser",
   "version": "0.0.1",
-  "description": "ALTTPR Map Checker",
+  "description": "ALTTPR Dungeon Guesser",
   "keywords": [
     "react",
     "starter"
