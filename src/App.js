@@ -2,6 +2,7 @@ import { useState } from "react";
 import Modal from "react-modal";
 import { DarkWorld } from "./DarkWorld";
 import { DungeonGuesser } from "./DungeonGuesser";
+import { dungeonBosses } from "./dungeons";
 import { LigthtWorld } from "./LightWord";
 import { beginner, ModeSelector } from "./ModeSelector";
 import { randomizePrizes } from "./prize";
@@ -143,11 +144,26 @@ export default function App() {
       >
         <div className="result-modal">
           <h1>Result</h1>
-          <p>{result.winner ? "You Win" : "You Lost - Wrong Answers"}</p>
+          <p>{result.winner ? "You Win" : "You Lost - Missing Answers"}</p>
           <ul>
+            
             {result.guesses &&
-              result.guesses.map((guess) => {
-                return <li>{guess}</li>;
+              Object.keys(result.guesses).map((key) => {
+                const boss = dungeonBosses.filter(boss => boss.id === key)[0]
+                return <li><img
+                id={result.guesses[key].id}
+                className="boss boss-icon"
+                src={`/${boss.bossIcon}`}
+                alt={result.guesses[key].id}
+              />
+               <input
+                type="image"
+                id={boss.id}
+                className="boss"
+                value={boss.id}
+                src={`/${result.guesses[key].guessIcon}`}
+                alt={boss.id}
+              /></li>;
               })}
           </ul>
           <button class="btn btn-secondary" onClick={() => resetGame()}>

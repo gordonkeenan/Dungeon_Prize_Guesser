@@ -139,7 +139,7 @@ button.mode {
 
 .icon {
   /* animation: blink 0.6s infinite; */
-  width: 32px;
+  width: 28px;
 }
 
 @keyframes blink {
@@ -178,11 +178,6 @@ button.mode {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-}
-
-.boss-row {
-  margin-top: 10px;
-  width: 100%;
 }
 
 .parent {

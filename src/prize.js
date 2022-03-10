@@ -21,12 +21,15 @@ export const redBluePendant = {
 
 export const redPendant = {
   prizeName: "redBluePendant",
-  prizeIcon: "red_p2.gif"
+  prizeIcon: "red_p2.gif",
+  guessIcon: "prize2.png",
+
 };
 
 export const bluePendant = {
   prizeName: "redBluePendant",
-  prizeIcon: "blue_p2.gif"
+  prizeIcon: "blue_p2.gif",
+  guessIcon: "prize2.png"
 };
 
 export const crystal = {

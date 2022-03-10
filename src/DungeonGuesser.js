@@ -24,6 +24,20 @@ const newGameGuesses = {
   turtleRock: noPrize
 };
 
+
+export const getWrongGuesses = (dungeons, dungeonsGuesses) => {
+  // const guesses = Object.keys(dungeonsGuesses).filter((key) => {
+  //   return dungeonsGuesses[key].prizeName !== dungeons[key].prizeName;
+  // });
+  const guesses = Object.entries(dungeons).reduce((guesses, [key, val]) => {
+    if (dungeonsGuesses[key].prizeName !== dungeons[key].prizeName) {
+      guesses[key] = val;
+    }
+    return guesses
+  }, {})
+  return guesses;
+};
+
 export const DungeonGuesser = ({
   dungeons,
   enabled,
@@ -44,14 +58,11 @@ export const DungeonGuesser = ({
   };
 
   const checkAnswer = () => {
-    const result = isEqual(dungeons, dungeonsGuesses);
-    const guesses = Object.keys(dungeonsGuesses).filter((key) => {
-      return dungeonsGuesses[key] !== dungeons[key];
-    });
-    console.info(guesses);
+   // const result = isEqual(dungeons, dungeonsGuesses);
+    const guesses = getWrongGuesses(dungeons, dungeonsGuesses)
 
     setResult({
-      winner: result,
+      winner: Object.keys(guesses).lenght === 0,
       guesses: guesses
     });
     setDungeonsGuesses(newGameGuesses);
@@ -94,7 +105,7 @@ export const DungeonGuesser = ({
                 className="boss prize"
                 value={boss.id}
                 src={`/${prizeIcon}`}
-                alt="Eastern"
+                alt={boss.id}
                 onClick={(e) => togglePrize(e)}
               />
             </div>
