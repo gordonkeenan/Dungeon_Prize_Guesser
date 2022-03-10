@@ -106,7 +106,7 @@ export default function App() {
           onClick={(e) => openLightWorld(e, true)}
           disabled={lightWorldDisabled}
         >
-          Check LightWord
+          Lightworld Map
         </button>
 
         <Modal
@@ -125,7 +125,7 @@ export default function App() {
           onClick={(e) => openDarkWorld(e, true)}
           disabled={darkWorldDisabled}
         >
-          Check DarkWorld
+          DarkWorld Map
         </button>
       </p>
       <DungeonGuesser
