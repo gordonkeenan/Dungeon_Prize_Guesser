@@ -17,7 +17,7 @@ export default function App() {
   const [darkWorldDisabled, setDarkWorldDisabled] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState({
-    winner: false
+    winner: false,
   });
   const [selectedMode, setMode] = useState(beginner);
   const [modeSelectable, setModeSelectable] = useState(true);
@@ -90,8 +90,8 @@ export default function App() {
       padding: "0px",
       inset: "0",
       backgroundColor: "lightgrey",
-      border: "0px"
-    }
+      border: "0px",
+    },
   };
 
   return (
@@ -143,32 +143,39 @@ export default function App() {
         contentLabel="Lightworld"
       >
         <div className="result-modal">
-          <h1>Result</h1>
-          <p>{result.winner ? "You Win" : "You Lost - Missing Answers"}</p>
+          <h4>Game Over</h4>
+          <p>
+            {" "}
+            <button class="btn btn-secondary" onClick={() => resetGame()}>
+              Play Again
+            </button>
+          </p>
+          <p>{result.winner ? "You Win!" : "You Lost - Missing Answers"} </p>
+        
           <ul>
-            
             {result.guesses &&
               Object.keys(result.guesses).map((key) => {
-                const boss = dungeonBosses.filter(boss => boss.id === key)[0]
-                return <li><img
-                id={result.guesses[key].id}
-                className="boss boss-icon"
-                src={`/${boss.bossIcon}`}
-                alt={result.guesses[key].id}
-              />
-               <input
-                type="image"
-                id={boss.id}
-                className="boss"
-                value={boss.id}
-                src={`/${result.guesses[key].guessIcon}`}
-                alt={boss.id}
-              /></li>;
+                const boss = dungeonBosses.filter((boss) => boss.id === key)[0];
+                return (
+                  <li>
+                    <img
+                      id={result.guesses[key].id}
+                      className="boss boss-icon"
+                      src={`/${boss.bossIcon}`}
+                      alt={result.guesses[key].id}
+                    />
+                    <input
+                      type="image"
+                      id={boss.id}
+                      className="boss"
+                      value={boss.id}
+                      src={`/${result.guesses[key].guessIcon}`}
+                      alt={boss.id}
+                    />
+                  </li>
+                );
               })}
           </ul>
-          <button class="btn btn-secondary" onClick={() => resetGame()}>
-            Play Again
-          </button>
         </div>
       </Modal>
       <Modal

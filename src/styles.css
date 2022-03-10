@@ -203,7 +203,7 @@ button.mode {
 
 .result-modal {
   position: absolute;
-  padding: 5px;
+  padding-left: 10px;
   /* top: 20%;
   left: 50%;
   transform: translate(-50%, -50%); */
