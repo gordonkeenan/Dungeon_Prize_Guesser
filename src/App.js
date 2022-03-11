@@ -97,7 +97,7 @@ export default function App() {
   return (
     <div className="App">
       <header>
-        <h1>Dungeon Prize Practice App</h1>
+        <h1>Dungeon Guesser</h1>
       </header>
       <p>
         <button
