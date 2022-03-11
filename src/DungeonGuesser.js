@@ -62,7 +62,7 @@ export const DungeonGuesser = ({
     const guesses = getWrongGuesses(dungeons, dungeonsGuesses)
 
     setResult({
-      winner: Object.keys(guesses).lenght === 0,
+      winner: Object.keys(guesses).length === 0,
       guesses: guesses
     });
     setDungeonsGuesses(newGameGuesses);

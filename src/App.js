@@ -79,6 +79,10 @@ export default function App() {
     }, randonShow);
   };
 
+  const handleTimedMode = (setWorld, show) => {
+    setWorld(show);
+  };
+
   const getRandomInt = (max, min) => {
     return Math.floor(Math.random() * (max - min) + min);
   };
