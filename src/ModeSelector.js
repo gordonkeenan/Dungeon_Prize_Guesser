@@ -14,7 +14,7 @@ export const beginner = {
   id: "beginner",
   icon: "sword1.png",
   name: "Beginner",
-  text: "30 seconds to view each map",
+  text: "30 seconds to view each map.",
   timeout: 30000,
   checkOnce: true
 };
@@ -23,7 +23,7 @@ export const racer = {
   id: "racer",
   icon: "sword2.png",
   name: "Racer",
-  text: "10 seconds to view each map",
+  text: "10 seconds to view each map.",
   timeout: 10000,
   checkOnce: true
 };
@@ -31,7 +31,7 @@ export const racer = {
 export const expert = {
   id: "expert",
   icon: "sword3.png",
-  text: "5 seconds to view each map",
+  text: "5 seconds to view each map.",
   name: "Expert",
   timeout: 5000,
   checkOnce: true
