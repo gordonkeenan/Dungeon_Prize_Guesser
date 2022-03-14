@@ -9,7 +9,7 @@ export const DarkWorld = ({ dungeons, seconds, minutes }) => {
   };
   return (
     <div className="world-background Modal" style={style}>
-      <span className="countdown">{zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}</span>
+      <span className="timer">{zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}</span>
       {dungeonBosses.map((boss, index) => {
         const prizeIcon = dungeons[boss.id]["prizeIcon"];
         return (

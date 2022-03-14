@@ -60,13 +60,13 @@ export const DungeonGuesser = ({
   const checkAnswer = () => {
    // const result = isEqual(dungeons, dungeonsGuesses);
     const guesses = getWrongGuesses(dungeons, dungeonsGuesses)
-
+    const winner = Object.keys(guesses).length === 0;
     setResult({
-      winner: Object.keys(guesses).length === 0,
+      winner: winner,
       guesses: guesses
     });
     setDungeonsGuesses(newGameGuesses);
-    setShowResult(true);
+    setShowResult(winner);
   };
 
   const getNextPrize = (prize) => {
@@ -95,7 +95,7 @@ export const DungeonGuesser = ({
             <div className="col boss parent col-centered">
               <img
                 id={boss.id}
-                className="boss boss-icon"
+                className="boss parent"
                 src={`/${boss.bossIcon}`}
                 alt={boss.name}
               />
