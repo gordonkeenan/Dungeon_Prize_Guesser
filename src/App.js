@@ -1,12 +1,15 @@
 import { useState } from "react";
 import Modal from "react-modal";
+import { useStopwatch } from "react-timer-hook";
 import { DarkWorld } from "./DarkWorld";
 import { DungeonGuesser } from "./DungeonGuesser";
 import { dungeonBosses } from "./dungeons";
 import { LigthtWorld } from "./LightWord";
-import { beginner, ModeSelector } from "./ModeSelector";
+import { beginner, ModeSelector, practice } from "./ModeSelector";
 import { randomizePrizes } from "./prize";
 import "./styles.css";
+import { useLocalStorage } from "./useLocalStorage";
+import { getRandomInt, zeroPad } from "./Utils";
 
 let dungeons = randomizePrizes();
 
@@ -19,8 +22,20 @@ export default function App() {
   const [result, setResult] = useState({
     winner: false,
   });
-  const [selectedMode, setMode] = useState(beginner);
+  const [selectedMode, setMode] = useState(practice);
   const [modeSelectable, setModeSelectable] = useState(true);
+  const [bestTime, setBestTime] = useLocalStorage("bestTime", NaN);
+
+  const finishGame = (winner) => {
+    const totalTime = seconds + minutes * 60;
+    if (winner && (!bestTime || totalTime < bestTime)) {
+      setBestTime(totalTime);
+    }
+    setShowResult(true);
+  };
+
+  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
+    useStopwatch({ autoStart: false });
 
   const setSelectedMode = (mode) => {
     if (modeSelectable) {
@@ -29,10 +44,12 @@ export default function App() {
   };
 
   const closeDarkWorld = () => {
+    pause();
     setShowDarkWorld(false);
   };
 
   const closeLightWorld = () => {
+    pause();
     setShowLightWorld(false);
   };
 
@@ -42,6 +59,7 @@ export default function App() {
     dungeons = randomizePrizes();
     setShowResult(false);
     setModeSelectable(true);
+    reset();
   };
 
   const openLightWorld = (e, open) => {
@@ -63,6 +81,7 @@ export default function App() {
     if (selectedMode.random) {
       handleRandomMode(setWorld, show);
     } else {
+      start();
       setWorld(show);
       if (selectedMode.timeout) {
         setTimeout(() => setWorld(false), selectedMode.timeout);
@@ -81,10 +100,6 @@ export default function App() {
 
   const handleTimedMode = (setWorld, show) => {
     setWorld(show);
-  };
-
-  const getRandomInt = (max, min) => {
-    return Math.floor(Math.random() * (max - min) + min);
   };
 
   const customStyles = {
@@ -119,7 +134,11 @@ export default function App() {
           contentLabel="Lightworld"
         >
           <div onClick={() => closeDarkWorld()}>
-            <DarkWorld dungeons={dungeons} />
+            <DarkWorld
+              dungeons={dungeons}
+              seconds={seconds}
+              minutes={minutes}
+            />
           </div>
         </Modal>
 
@@ -135,7 +154,7 @@ export default function App() {
       <DungeonGuesser
         dungeons={dungeons}
         enabled={!showDarkWorld && !showLightWorld}
-        setShowResult={setShowResult}
+        setShowResult={finishGame}
         setResult={setResult}
       ></DungeonGuesser>
       <Modal
@@ -147,39 +166,115 @@ export default function App() {
         contentLabel="Lightworld"
       >
         <div className="result-modal">
-          <h4>Game Over</h4>
-          <p>
-            {" "}
-            <button class="btn btn-secondary" onClick={() => resetGame()}>
-              Play Again
-            </button>
-          </p>
-          <p>{result.winner ? "You Win!" : "You Lost - Missing Answers"} </p>
-        
-          <ul>
-            {result.guesses &&
-              Object.keys(result.guesses).map((key) => {
-                const boss = dungeonBosses.filter((boss) => boss.id === key)[0];
-                return (
-                  <li>
-                    <img
-                      id={result.guesses[key].id}
-                      className="boss boss-icon"
-                      src={`/${boss.bossIcon}`}
-                      alt={result.guesses[key].id}
-                    />
-                    <input
-                      type="image"
-                      id={boss.id}
-                      className="boss"
-                      value={boss.id}
-                      src={`/${result.guesses[key].guessIcon}`}
-                      alt={boss.id}
-                    />
-                  </li>
-                );
-              })}
-          </ul>
+          <div class="container">
+            <div class="row">
+              <h4>Game Over</h4>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                <span className="timer result">
+                  Current Time: {zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}
+                </span>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm">
+                <span className="timer best">
+                  Best Time: {bestTime ? zeroPad(bestTime, 2) : "--"} Seconds
+                </span>
+              </div>
+              <div class="col-sm">
+                <figure>
+                  <img
+                    className={bestTime < 60 ? "medal" : "medal incomplete"}
+                    src="sword1.png"
+                    title="Achieve a time less than 60 seconds"
+                  />
+                  <figcaption>Beginner</figcaption>
+                </figure>
+              </div>
+              <div class="col-sm">
+                <figure>
+                  <img
+                    className={bestTime < 30 ? "medal" : "medal incomplete"}
+                    src="sword2.png"
+                    alt="Achieve a time less than 5 seconds"
+                    title="Achieve a time less than 30 seconds"
+                  />
+                  <figcaption>Racer</figcaption>
+                </figure>
+              </div>
+              <div class="col-sm">
+                <figure>
+                  <img
+                    className={bestTime < 10 ? "medal" : "medal incomplete"}
+                    src="sword3.png"
+                    alt="Achieve a time less than 10 seconds"
+                    title="Achieve a time less than 10 seconds"
+                  />
+                  <figcaption>Expert</figcaption>
+                </figure>
+              </div>
+              <div class="col-sm">
+                <figure>
+                  <img
+                    className={bestTime < 5 ? "medal" : "medal incomplete"}
+                    src="sword4.png"
+                    alt="Achieve a time less than 5 seconds"
+                    title="Achieve a time less than 5 seconds"
+                  />
+                  <figcaption>Master</figcaption>
+                </figure>
+              </div>
+            </div>
+
+            <hr />
+              <div className="col-sm timer message">
+                {result.winner ? "You Win!" : "You Lost - Missing Answers:"}
+              </div>
+              <hr />
+
+            
+
+            <div className="row">
+              {result.guesses &&
+                Object.keys(result.guesses).map((key) => {
+                  const boss = dungeonBosses.filter(
+                    (boss) => boss.id === key
+                  )[0];
+                  return (
+                    <div class="col parent">
+                      <img
+                        id={result.guesses[key].id}
+                        className="boss boss-icon"
+                        src={`/${boss.bossIcon}`}
+                        alt={result.guesses[key].id}
+                      />
+                      <input
+                        type="image"
+                        id={boss.id}
+                        className="boss prize"
+                        value={boss.id}
+                        src={`/${result.guesses[key].guessIcon}`}
+                        alt={boss.id}
+                      />
+                    </div>
+                  );
+                })}
+            </div>
+          </div>
+          <hr />
+
+          <div>
+            <div class="row justify-content-md-center">
+              <div class="col-md-auto">
+                <button class="btn btn-secondary" onClick={() => resetGame()}>
+                  Play Again
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </Modal>
       <Modal
@@ -191,15 +286,13 @@ export default function App() {
         contentLabel="Lightworld"
       >
         <div className="world-modal" onClick={() => closeLightWorld()}>
-          <LigthtWorld dungeons={dungeons} />
+          <LigthtWorld
+            dungeons={dungeons}
+            seconds={seconds}
+            minutes={minutes}
+          />
         </div>
       </Modal>
-      {/* {showLightWorld && <LigthtWorld dungeons={dungeons} />} */}
-
-      <ModeSelector
-        selectedMode={selectedMode}
-        setMode={setSelectedMode}
-      ></ModeSelector>
     </div>
   );
 }
