@@ -208,3 +208,19 @@ button.mode {
   left: 50%;
   transform: translate(-50%, -50%); */
 }
+
+.countdown {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 2rem;
+  margin-left: 0.8rem;
+}
+
+.countdown span {
+  color: white;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+  font-size: 3rem;
+  margin-left: 0.8rem;
+}

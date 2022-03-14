@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Modal from "react-modal";
+import { useStopwatch } from 'react-timer-hook';
 import { DarkWorld } from "./DarkWorld";
 import { DungeonGuesser } from "./DungeonGuesser";
 import { dungeonBosses } from "./dungeons";
@@ -7,6 +8,7 @@ import { LigthtWorld } from "./LightWord";
 import { beginner, ModeSelector } from "./ModeSelector";
 import { randomizePrizes } from "./prize";
 import "./styles.css";
+import { zeroPad } from "./Utils";
 
 let dungeons = randomizePrizes();
 
@@ -22,6 +24,17 @@ export default function App() {
   const [selectedMode, setMode] = useState(beginner);
   const [modeSelectable, setModeSelectable] = useState(true);
 
+    const {
+      seconds,
+      minutes,
+      hours,
+      days,
+      isRunning,
+      start,
+      pause,
+      reset,
+    } = useStopwatch({ autoStart: false });
+
   const setSelectedMode = (mode) => {
     if (modeSelectable) {
       setMode(mode);
@@ -29,10 +42,12 @@ export default function App() {
   };
 
   const closeDarkWorld = () => {
+    pause();
     setShowDarkWorld(false);
   };
 
   const closeLightWorld = () => {
+    pause();
     setShowLightWorld(false);
   };
 
@@ -42,6 +57,7 @@ export default function App() {
     dungeons = randomizePrizes();
     setShowResult(false);
     setModeSelectable(true);
+    reset();
   };
 
   const openLightWorld = (e, open) => {
@@ -63,6 +79,7 @@ export default function App() {
     if (selectedMode.random) {
       handleRandomMode(setWorld, show);
     } else {
+      start();
       setWorld(show);
       if (selectedMode.timeout) {
         setTimeout(() => setWorld(false), selectedMode.timeout);
@@ -119,7 +136,7 @@ export default function App() {
           contentLabel="Lightworld"
         >
           <div onClick={() => closeDarkWorld()}>
-            <DarkWorld dungeons={dungeons} />
+            <DarkWorld dungeons={dungeons} seconds={seconds} minutes={minutes}/>
           </div>
         </Modal>
 
@@ -148,6 +165,7 @@ export default function App() {
       >
         <div className="result-modal">
           <h4>Game Over</h4>
+          <span className="countdown">{zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}</span>
           <p>
             {" "}
             <button class="btn btn-secondary" onClick={() => resetGame()}>
@@ -156,12 +174,13 @@ export default function App() {
           </p>
           <p>{result.winner ? "You Win!" : "You Lost - Missing Answers"} </p>
         
-          <ul>
+          <div class="container">
+          <div class="row">
             {result.guesses &&
               Object.keys(result.guesses).map((key) => {
                 const boss = dungeonBosses.filter((boss) => boss.id === key)[0];
                 return (
-                  <li>
+                  <div class="col">
                     <img
                       id={result.guesses[key].id}
                       className="boss boss-icon"
@@ -176,10 +195,11 @@ export default function App() {
                       src={`/${result.guesses[key].guessIcon}`}
                       alt={boss.id}
                     />
-                  </li>
+                  </div>
                 );
               })}
-          </ul>
+              </div>
+          </div>
         </div>
       </Modal>
       <Modal
@@ -191,7 +211,7 @@ export default function App() {
         contentLabel="Lightworld"
       >
         <div className="world-modal" onClick={() => closeLightWorld()}>
-          <LigthtWorld dungeons={dungeons} />
+          <LigthtWorld dungeons={dungeons} seconds={seconds} minutes={minutes}/>
         </div>
       </Modal>
       {/* {showLightWorld && <LigthtWorld dungeons={dungeons} />} */}
