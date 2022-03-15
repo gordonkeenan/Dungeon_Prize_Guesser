@@ -59,7 +59,7 @@ export default function App() {
     dungeons = randomizePrizes();
     setShowResult(false);
     setModeSelectable(true);
-    reset();
+    reset(undefined, false);
   };
 
   const openLightWorld = (e, open) => {
@@ -165,16 +165,31 @@ export default function App() {
         style={customStyles}
         contentLabel="Lightworld"
       >
-        <div className="result-modal">
+        <div className="result-modal Modal" onClick={() => resetGame()}>
           <div class="container">
-            <div class="row">
-              <h4>Game Over</h4>
+            {/* <div class="row justify-content-md-center">
+              <div class="col-md-auto">
+                <h4>Game Over</h4>0
+              </div>
+            </div> */}
+            <div class="timer result row justify-content-md-center">
+              <div class="col-md-auto">
+                {result.winner ? "You Win!" : "You Lost!"}
+              </div>
             </div>
+              
+            <hr/>
             <div class="row">
               <div class="col-sm">
                 <span className="timer result">
                   Current Time: {zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}
                 </span>
+              </div>
+
+              <div class="col-md-auto">
+                <button class="btn btn-secondary" onClick={() => resetGame()}>
+                  Play Again
+                </button>
               </div>
             </div>
             <hr />
@@ -184,7 +199,7 @@ export default function App() {
                   Best Time: {bestTime ? zeroPad(bestTime, 2) : "--"} Seconds
                 </span>
               </div>
-              <div class="col-sm">
+              <div class="col">
                 <figure>
                   <img
                     className={bestTime < 60 ? "medal" : "medal incomplete"}
@@ -194,7 +209,7 @@ export default function App() {
                   <figcaption>Beginner</figcaption>
                 </figure>
               </div>
-              <div class="col-sm">
+              <div class="col">
                 <figure>
                   <img
                     className={bestTime < 30 ? "medal" : "medal incomplete"}
@@ -205,7 +220,7 @@ export default function App() {
                   <figcaption>Racer</figcaption>
                 </figure>
               </div>
-              <div class="col-sm">
+              <div class="col">
                 <figure>
                   <img
                     className={bestTime < 10 ? "medal" : "medal incomplete"}
@@ -216,7 +231,7 @@ export default function App() {
                   <figcaption>Expert</figcaption>
                 </figure>
               </div>
-              <div class="col-sm">
+              <div class="col">
                 <figure>
                   <img
                     className={bestTime < 5 ? "medal" : "medal incomplete"}
@@ -230,12 +245,11 @@ export default function App() {
             </div>
 
             <hr />
+            {!result.winner && <div>
               <div className="col-sm timer message">
-                {result.winner ? "You Win!" : "You Lost - Missing Answers:"}
-              </div>
-              <hr />
-
-            
+              {!result.winner && "Missing Answers:"}
+            </div>
+            <hr />
 
             <div className="row">
               {result.guesses &&
@@ -262,18 +276,8 @@ export default function App() {
                     </div>
                   );
                 })}
-            </div>
-          </div>
-          <hr />
-
-          <div>
-            <div class="row justify-content-md-center">
-              <div class="col-md-auto">
-                <button class="btn btn-secondary" onClick={() => resetGame()}>
-                  Play Again
-                </button>
-              </div>
-            </div>
+            </div></div>}
+            
           </div>
         </div>
       </Modal>

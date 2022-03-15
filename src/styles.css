@@ -175,9 +175,9 @@ button.mode {
   height: 100vw;
   max-width: 640px;
   max-height: 640px;
-  top: 50%;
+  
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%);
 }
 
 .parent {
@@ -232,3 +232,4 @@ button.mode {
 .timer.message {
   font-size: 1rem;
 }
+
