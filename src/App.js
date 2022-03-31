@@ -19,6 +19,8 @@ export default function App() {
   const [lightWorldDisabled, setLightWorldDisabled] = useState(false);
   const [darkWorldDisabled, setDarkWorldDisabled] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [milliseconds, setMillisecond] = useState(0);
+
   const [result, setResult] = useState({
     winner: false,
   });
@@ -177,8 +179,8 @@ export default function App() {
                 {result.winner ? "You Win!" : "You Lost!"}
               </div>
             </div>
-              
-            <hr/>
+
+            <hr />
             <div class="row">
               <div class="col-sm">
                 <span className="timer result">
@@ -196,7 +198,7 @@ export default function App() {
             <div class="row">
               <div class="col-sm">
                 <span className="timer best">
-                  Best Time: {bestTime ? zeroPad(bestTime, 2) : "--"} Seconds
+                  Best Time: {bestTime ? zeroPad(bestTime, 2) : "--"} maybePluralize(bestTime, 'Second')
                 </span>
               </div>
               <div class="col">
@@ -245,39 +247,41 @@ export default function App() {
             </div>
 
             <hr />
-            {!result.winner && <div>
-              <div className="col-sm timer message">
-              {!result.winner && "Missing Answers:"}
-            </div>
-            <hr />
+            {!result.winner && (
+              <div>
+                <div className="col-sm timer message">
+                  {!result.winner && "Missing Answers:"}
+                </div>
+                <hr />
 
-            <div className="row">
-              {result.guesses &&
-                Object.keys(result.guesses).map((key) => {
-                  const boss = dungeonBosses.filter(
-                    (boss) => boss.id === key
-                  )[0];
-                  return (
-                    <div class="col parent">
-                      <img
-                        id={result.guesses[key].id}
-                        className="boss boss-icon"
-                        src={`/${boss.bossIcon}`}
-                        alt={result.guesses[key].id}
-                      />
-                      <input
-                        type="image"
-                        id={boss.id}
-                        className="boss prize"
-                        value={boss.id}
-                        src={`/${result.guesses[key].guessIcon}`}
-                        alt={boss.id}
-                      />
-                    </div>
-                  );
-                })}
-            </div></div>}
-            
+                <div className="row">
+                  {result.guesses &&
+                    Object.keys(result.guesses).map((key) => {
+                      const boss = dungeonBosses.filter(
+                        (boss) => boss.id === key
+                      )[0];
+                      return (
+                        <div class="col parent">
+                          <img
+                            id={result.guesses[key].id}
+                            className="boss boss-icon"
+                            src={`/${boss.bossIcon}`}
+                            alt={result.guesses[key].id}
+                          />
+                          <input
+                            type="image"
+                            id={boss.id}
+                            className="boss prize"
+                            value={boss.id}
+                            src={`/${result.guesses[key].guessIcon}`}
+                            alt={boss.id}
+                          />
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </Modal>
@@ -294,6 +298,8 @@ export default function App() {
             dungeons={dungeons}
             seconds={seconds}
             minutes={minutes}
+            setMillisecond={setMillisecond}
+            milliseconds={milliseconds}
           />
         </div>
       </Modal>
