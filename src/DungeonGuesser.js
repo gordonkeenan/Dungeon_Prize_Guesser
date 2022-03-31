@@ -49,10 +49,12 @@ export const DungeonGuesser = ({
   const [answer, setAnswer] = useState(false);
 
   const togglePrize = (e) => {
+    e.preventDefault();
     if (enabled) {
+
       const value = e.target.value;
       const newState = { ...dungeonsGuesses };
-      newState[value] = getNextPrize(dungeonsGuesses[value]);
+      newState[value] = e.type === 'contextmenu' ? getPreviousPrize(dungeonsGuesses[value]) : getNextPrize(dungeonsGuesses[value]);
       setDungeonsGuesses({ ...newState });
     }
   };
@@ -86,6 +88,23 @@ export const DungeonGuesser = ({
     }
   };
 
+  const getPreviousPrize = (prize) => {
+    switch (prize.prizeName) {
+      case "none":
+        return redCrystal;
+      case "redCrystal":
+        return crystal;
+      case "crystal":
+        return redBluePendant;
+      case "redBluePendant":
+        return greenPendant;
+      case "greenPendant":
+        return noPrize;
+      default:
+        return noPrize;
+    }
+  };
+
   return (
     <div className="container">
       <div className="row boss-row">
@@ -107,6 +126,7 @@ export const DungeonGuesser = ({
                 src={`/${prizeIcon}`}
                 alt={boss.id}
                 onClick={(e) => togglePrize(e)}
+                onContextMenu={(e) => togglePrize(e)}
               />
             </div>
           );
