@@ -20,14 +20,13 @@ export default function App() {
   const [lightWorldDisabled, setLightWorldDisabled] = useState(false);
   const [darkWorldDisabled, setDarkWorldDisabled] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  // const [milliseconds, setMillisecond] = useState(0);
 
   const [result, setResult] = useState({
     winner: false,
   });
   const [selectedMode, setMode] = useState(practice);
   const [modeSelectable, setModeSelectable] = useState(true);
-  const [bestTime, setBestTime] = useLocalStorage("bestTime", NaN);
+  const [bestTime, setBestTime] = useLocalStorage("bestMilliSecondTime", NaN);
   const minutes = 0;
   const seconds = 0;
 
@@ -38,9 +37,6 @@ export default function App() {
     }
     setShowResult(true);
   };
-
-  // const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
-  //   useStopwatch({ autoStart: false });
 
     const { start, pause, reset, milliseconds } =
     useTimer({ autoStart: false });
@@ -58,7 +54,6 @@ export default function App() {
 
   const closeLightWorld = () => {
     pause();
-    console.log(milliseconds)
     setShowLightWorld(false);
   };
 
@@ -167,19 +162,12 @@ export default function App() {
       ></DungeonGuesser>
       <Modal
         isOpen={showResult}
-        // onAfterOpen={afterOpenModal}
-        // onRequestClose={closeModal}
         dialogClassName="modal-dialog"
         style={customStyles}
         contentLabel="Lightworld"
       >
         <div className="result-modal Modal" onClick={() => resetGame()}>
           <div class="container">
-            {/* <div class="row justify-content-md-center">
-              <div class="col-md-auto">
-                <h4>Game Over</h4>0
-              </div>
-            </div> */}
             <div class="timer result row justify-content-md-center">
               <div class="col-md-auto">
                 {result.winner ? "You Win!" : "You Lost!"}
@@ -204,7 +192,7 @@ export default function App() {
             <div class="row">
               <div class="col-sm">
                 <span className="timer best">
-                  Best Time: {(bestTime / 1000).toFixed(3)}
+                  Best Time: {bestTime ? (bestTime / 1000).toFixed(3): ''}
                 </span>
               </div>
               <div class="col">
