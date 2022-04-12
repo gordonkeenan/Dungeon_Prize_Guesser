@@ -24,17 +24,6 @@ const newGameGuesses = {
   turtleRock: noPrize,
 };
 
-// export const getWrongGuesses = (dungeons, dungeonsGuesses) => {
-//   const guesses = Object.entries(dungeons).reduce((guesses, [key, val]) => {
-//      const noGuessCrystal = dungeonsGuesses[key].prizeName === "none" && dungeons[key].prizeName === "crystal";
-//      if  (!(defaultToCrystals && noGuessCrystal) && dungeonsGuesses[key].prizeName !== dungeons[key].prizeName) {
-//       guesses[key] = val;
-//     }
-//     return guesses
-//   }, {})
-//   return guesses;
-// };
-
 export const DungeonGuesser = ({
   dungeons,
   enabled,

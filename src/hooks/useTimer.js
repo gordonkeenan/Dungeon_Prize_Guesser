@@ -11,7 +11,6 @@ const useTimer = () => {
   const [interval, setIntervalRef] = useState(0);
 
   const start = () => {
-    console.log("start");
     const newPrevTime = new Date();
     setPrevTime(newPrevTime);
     setIsRunning(true);
@@ -27,7 +26,6 @@ const useTimer = () => {
     setIsRunning(false);
     clearInterval(interval);
     setPrevMilliSeconds(milliseconds);
-    console.log("pause", milliseconds);
   };
 
   useInterval(
