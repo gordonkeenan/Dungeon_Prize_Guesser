@@ -4,6 +4,7 @@ import { useStopwatch } from "react-timer-hook";
 import { DarkWorld } from "./DarkWorld";
 import { DungeonGuesser } from "./DungeonGuesser";
 import { dungeonBosses } from "./dungeons";
+import useTimer from "./hooks/useTimer";
 import { LigthtWorld } from "./LightWord";
 import { beginner, ModeSelector, practice } from "./ModeSelector";
 import { randomizePrizes } from "./prize";
@@ -19,7 +20,7 @@ export default function App() {
   const [lightWorldDisabled, setLightWorldDisabled] = useState(false);
   const [darkWorldDisabled, setDarkWorldDisabled] = useState(false);
   const [showResult, setShowResult] = useState(false);
-  const [milliseconds, setMillisecond] = useState(0);
+  // const [milliseconds, setMillisecond] = useState(0);
 
   const [result, setResult] = useState({
     winner: false,
@@ -27,17 +28,22 @@ export default function App() {
   const [selectedMode, setMode] = useState(practice);
   const [modeSelectable, setModeSelectable] = useState(true);
   const [bestTime, setBestTime] = useLocalStorage("bestTime", NaN);
+  const minutes = 0;
+  const seconds = 0;
 
   const finishGame = (winner) => {
-    const totalTime = seconds + minutes * 60;
+    const totalTime = milliseconds;
     if (winner && (!bestTime || totalTime < bestTime)) {
       setBestTime(totalTime);
     }
     setShowResult(true);
   };
 
-  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
-    useStopwatch({ autoStart: false });
+  // const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
+  //   useStopwatch({ autoStart: false });
+
+    const { start, pause, reset, milliseconds } =
+    useTimer({ autoStart: false });
 
   const setSelectedMode = (mode) => {
     if (modeSelectable) {
@@ -52,6 +58,7 @@ export default function App() {
 
   const closeLightWorld = () => {
     pause();
+    console.log(milliseconds)
     setShowLightWorld(false);
   };
 
@@ -138,8 +145,7 @@ export default function App() {
           <div onClick={() => closeDarkWorld()}>
             <DarkWorld
               dungeons={dungeons}
-              seconds={seconds}
-              minutes={minutes}
+              milliseconds={milliseconds}
             />
           </div>
         </Modal>
@@ -184,7 +190,7 @@ export default function App() {
             <div class="row">
               <div class="col-sm">
                 <span className="timer result">
-                  Current Time: {zeroPad(minutes, 2)}:{zeroPad(seconds, 2)}
+                  Current Time: {(milliseconds / 1000).toFixed(3)}
                 </span>
               </div>
 
@@ -198,15 +204,15 @@ export default function App() {
             <div class="row">
               <div class="col-sm">
                 <span className="timer best">
-                  Best Time: {bestTime ? zeroPad(bestTime, 2) : "--"} maybePluralize(bestTime, 'Second')
+                  Best Time: {(bestTime / 1000).toFixed(3)}
                 </span>
               </div>
               <div class="col">
                 <figure>
                   <img
-                    className={bestTime < 60 ? "medal" : "medal incomplete"}
+                    className={bestTime < 20000 ? "medal" : "medal incomplete"}
                     src="sword1.png"
-                    title="Achieve a time less than 60 seconds"
+                    title="Achieve a time less than 20 seconds"
                   />
                   <figcaption>Beginner</figcaption>
                 </figure>
@@ -214,10 +220,10 @@ export default function App() {
               <div class="col">
                 <figure>
                   <img
-                    className={bestTime < 30 ? "medal" : "medal incomplete"}
+                    className={bestTime < 5000 ? "medal" : "medal incomplete"}
                     src="sword2.png"
                     alt="Achieve a time less than 5 seconds"
-                    title="Achieve a time less than 30 seconds"
+                    title="Achieve a time less than 5 seconds"
                   />
                   <figcaption>Racer</figcaption>
                 </figure>
@@ -225,10 +231,10 @@ export default function App() {
               <div class="col">
                 <figure>
                   <img
-                    className={bestTime < 10 ? "medal" : "medal incomplete"}
+                    className={bestTime < 3000 ? "medal" : "medal incomplete"}
                     src="sword3.png"
-                    alt="Achieve a time less than 10 seconds"
-                    title="Achieve a time less than 10 seconds"
+                    alt="Achieve a time less than 3 seconds"
+                    title="Achieve a time less than 3 seconds"
                   />
                   <figcaption>Expert</figcaption>
                 </figure>
@@ -236,10 +242,10 @@ export default function App() {
               <div class="col">
                 <figure>
                   <img
-                    className={bestTime < 5 ? "medal" : "medal incomplete"}
+                    className={bestTime < 1000 ? "medal" : "medal incomplete"}
                     src="sword4.png"
-                    alt="Achieve a time less than 5 seconds"
-                    title="Achieve a time less than 5 seconds"
+                    alt="Achieve a time less than 1 second"
+                    title="Achieve a time less than 1 second"
                   />
                   <figcaption>Master</figcaption>
                 </figure>
@@ -296,9 +302,8 @@ export default function App() {
         <div className="world-modal" onClick={() => closeLightWorld()}>
           <LigthtWorld
             dungeons={dungeons}
-            seconds={seconds}
-            minutes={minutes}
-            setMillisecond={setMillisecond}
+            // seconds={seconds}
+            // minutes={minutes}
             milliseconds={milliseconds}
           />
         </div>

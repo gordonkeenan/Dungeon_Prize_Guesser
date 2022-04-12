@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
+import useTimer from "./hooks/useTimer";
 import background from "./Hyrule_Light_World_map.png";
 import { zeroPad } from "./Utils";
+// import useTimer from "react-timer-hook";
 
 // const [milliseconds, setMillisecond] = useState(0);
 // const interval = setInterval(() => {
@@ -10,18 +12,16 @@ import { zeroPad } from "./Utils";
 
 export const LigthtWorld = ({
   dungeons,
-  seconds,
-  minutes,
   milliseconds,
-  setMillisecond,
+  // setMillisecond,
 }) => {
   // const [milliseconds, setMillisecond] = useState(0);
   const style = {
     backgroundImage: `url(${background})`,
   };
-  const [intervalStatus, setIntervalStatus] = useState(false);
-  const startTime = Date.now();
-  let interval;
+  // const [intervalStatus, setIntervalStatus] = useState(false);
+  // const startTime = Date.now();
+  // let interval;
 
   // useEffect(() => {
   //   return () => { 
@@ -29,21 +29,31 @@ export const LigthtWorld = ({
   //     return clearInterval(interval)};
   // }),[];
 
-  useEffect(() => {
-    return () => {
-      console.log('will unmount');
-      clearInterval(interval);
-    }
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     console.log('will unmount');
+  //     clearInterval(interval);
+  //   }
+  // }, []);
 
 
-  useEffect(() => {
-    setIntervalStatus(true);
-    interval = setInterval(() => {
-      setMillisecond(Date.now() - startTime);
-      //document.getElementById("timer").innerHTML = (elapsedTime / 1000).toFixed(3);
-    }, 100);
-  }, milliseconds);
+  // useEffect(() => {
+  //   setIntervalStatus(true);
+  //   interval = setInterval(() => {
+  //     setMillisecond(Date.now() - startTime);
+  //     //document.getElementById("timer").innerHTML = (elapsedTime / 1000).toFixed(3);
+  //   }, 100);
+  // }, );
+
+  // const { start, pause, milliseconds } =
+  // useTimer({ autoStart: false });
+
+  //   useEffect(() => {
+  //     start();
+  //   return () => {
+  //     pause();
+  //   }
+  // }, []);
 
 
 
