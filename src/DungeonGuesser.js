@@ -8,7 +8,7 @@ import {
   greenPendant,
   noPrize,
   redBluePendant,
-  redCrystal
+  redCrystal,
 } from "./prize";
 
 const newGameGuesses = {
@@ -21,51 +21,56 @@ const newGameGuesses = {
   thievesTown: noPrize,
   ice: noPrize,
   mire: noPrize,
-  turtleRock: noPrize
-};
-
-
-export const getWrongGuesses = (dungeons, dungeonsGuesses) => {
-  // const guesses = Object.keys(dungeonsGuesses).filter((key) => {
-  //   return dungeonsGuesses[key].prizeName !== dungeons[key].prizeName;
-  // });
-  const guesses = Object.entries(dungeons).reduce((guesses, [key, val]) => {
-    if (dungeonsGuesses[key].prizeName !== dungeons[key].prizeName) {
-      guesses[key] = val;
-    }
-    return guesses
-  }, {})
-  return guesses;
+  turtleRock: noPrize,
 };
 
 export const DungeonGuesser = ({
   dungeons,
   enabled,
   setShowResult,
-  setResult
+  setResult,
 }) => {
   const [dungeonsGuesses, setDungeonsGuesses] = useState(newGameGuesses);
 
   const [answer, setAnswer] = useState(false);
 
+  const [defaultToCrystals, setDefaultToCrystals] = useState(false);
+
   const togglePrize = (e) => {
     e.preventDefault();
     if (enabled) {
-
       const value = e.target.value;
       const newState = { ...dungeonsGuesses };
-      newState[value] = e.type === 'contextmenu' ? getPreviousPrize(dungeonsGuesses[value]) : getNextPrize(dungeonsGuesses[value]);
+      newState[value] =
+        e.type === "contextmenu"
+          ? getPreviousPrize(dungeonsGuesses[value])
+          : getNextPrize(dungeonsGuesses[value]);
       setDungeonsGuesses({ ...newState });
     }
   };
 
+  const getWrongGuesses = (dungeons, dungeonsGuesses) => {
+    const guesses = Object.entries(dungeons).reduce((guesses, [key, val]) => {
+      const noGuessCrystal =
+        dungeonsGuesses[key].prizeName === "none" &&
+        dungeons[key].prizeName === "crystal";
+      if (
+        !(defaultToCrystals && noGuessCrystal) &&
+        dungeonsGuesses[key].prizeName !== dungeons[key].prizeName
+      ) {
+        guesses[key] = val;
+      }
+      return guesses;
+    }, {});
+    return guesses;
+  };
+
   const checkAnswer = () => {
-   // const result = isEqual(dungeons, dungeonsGuesses);
-    const guesses = getWrongGuesses(dungeons, dungeonsGuesses)
+    const guesses = getWrongGuesses(dungeons, dungeonsGuesses);
     const winner = Object.keys(guesses).length === 0;
     setResult({
       winner: winner,
-      guesses: guesses
+      guesses: guesses,
     });
     setDungeonsGuesses(newGameGuesses);
     setShowResult(winner);
@@ -131,14 +136,33 @@ export const DungeonGuesser = ({
             </div>
           );
         })}
-        <div>
-          <button
-            type="button"
-            class="btn btn-secondary"
-            onClick={() => checkAnswer()}
-          >
-            Check Answer
-          </button>
+        <div class="container">
+          <div class="row justify-content-md-center">
+            <div class="col-md-auto">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onClick={() => checkAnswer()}
+              >
+                Check Answer
+              </button>
+            </div>
+
+            {/* <div class="col-md-auto form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="flexSwitchCheckDefault"
+                onClick={() => {
+                  setDefaultToCrystals(!defaultToCrystals);
+                }}
+                checked={defaultToCrystals}
+              />
+              <label class="form-check-label" for="flexSwitchCheckDefault">
+                Default ? to Crystal
+              </label>
+            </div> */}
+          </div>
         </div>
       </div>
     </div>
