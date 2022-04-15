@@ -112,11 +112,11 @@ export const DungeonGuesser = ({
 
   return (
     <div className="container">
-      <div className="row boss-row">
+      <div className="row boss-row gx-0">
         {dungeonBosses.map((boss) => {
           const prizeIcon = dungeonsGuesses[boss.id]["guessIcon"];
           return (
-            <div className="col boss parent col-centered">
+            <div className="col boss parent col-centered gx-0">
               <img
                 id={boss.id}
                 className="boss parent"

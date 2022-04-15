@@ -158,6 +158,7 @@ button.mode {
 }
 
 .boss {
+  /* padding-left: 0; */
   max-width: 64px;
   margin: 2px;
 }
@@ -193,7 +194,6 @@ button.mode {
 .prize {
   position: absolute;
   top: 30px;
-  left: 45px;
 }
 
 .col-centered {
